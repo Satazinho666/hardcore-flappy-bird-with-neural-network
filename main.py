@@ -37,7 +37,7 @@ display = pygame.display.set_mode((288,512))
 # Names the window of the game:
 pygame.display.set_caption("Flappy Bird")
 
-Player = Bird() #only one right now, more to be implemented soon!
+Birds_list=[Bird()] #only one right now, more to be implemented soon!
 
 #----------------------------------------------------------------------------
 
@@ -51,7 +51,8 @@ while True:
             sys.exit()
 
         if event.type ==pygame.KEYDOWN:
-            Player.flap()
+            for bird in Birds_list:  
+                bird.flap()
 
     # Draws background in display (screen):
     display.blit(BACKGROUND,BACKGROUND.get_rect())
@@ -86,15 +87,25 @@ while True:
         display.blit(ground.image,(ground.x,ground.y))
    
     #Draws the bird(s) and control its movements:
-    Player.y += Player.speed
-    Player.draw(display)
-    Player.speed += GRAVITY 
-    if (time//120)%3 == 0:
-        Player.an_state = 0
-    elif (time//120)%3 == 1:
-        Player.an_state = 1
-    else:
-        Player.an_state = 2
+    for bird in Birds_list:
+        bird.y += bird.speed
+        bird.draw(display)
+        bird.speed += GRAVITY 
+        if (time//120)%3 == 0:
+            bird.an_state = 0
+        elif (time//120)%3 == 1:
+            bird.an_state = 1
+        else:
+            bird.an_state = 2
+
+        #Collision detection:
+        for pipe in pipes:
+            offset1 = (int(bird.x-pipe.x),int(bird.y - pipe.y[0]))
+            offset2 = (int(bird.x-pipe.x),int(bird.y - pipe.y[1]))
+            if pipe.masks[0].overlap(bird.masks[bird.an_state],offset1)!=None:
+                Birds_list.remove(bird)
+            elif pipe.masks[1].overlap(bird.masks[bird.an_state],offset2)!=None:
+                Birds_list.remove(bird)
 
     # Updates the screen and makes the game move on
     pygame.display.update()

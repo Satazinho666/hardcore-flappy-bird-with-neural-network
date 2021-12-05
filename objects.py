@@ -14,7 +14,7 @@ class Bird:
         self.x = 20 #position in x-axis
         self.speed = 2 #vertical speed of the bird
         self.an_state = 0
-
+        self.spt = pygame.sprite.Sprite()
         random = rd.randrange(0,3)
         if random ==0:
             self.an_images = [
@@ -36,6 +36,8 @@ class Bird:
                     pygame.image.load("Assets/yellowbird-midflap.png"), 
                     pygame.image.load("Assets/yellowbird-upflap.png")
                     ]
+
+        self.masks = [pygame.mask.from_surface(self.an_images[i]) for i in range(3)]
 
     def flap(self):
         ''' 
@@ -63,8 +65,12 @@ class Pipe:
             pygame.transform.flip(pygame.image.load("Assets/pipe-green.png"),False, True))
     # notice the .flip function above, which makes sure we have one of the pipes of each pair fliped
 
+        self.masks = [ pygame.mask.from_surface(self.images[i]) for i in range(2)]
+
+
 class Ground:
     def __init__(self,x_pos):
         self.y = 512-GROUND_HEIGHT
         self.x = x_pos
         self.image = pygame.image.load("Assets/base.png")
+        self.mask = pygame.mask.from_surface(self.image)
