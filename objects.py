@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import random as rd
 
-FLAP_FORCE = 10 #How strong are the wings
+FLAP_FORCE = 6 #How strong are the wings
 GROUND_HEIGHT = 100
 PIPE_GAP = 75 #Space between upper and bottom pipes
 
