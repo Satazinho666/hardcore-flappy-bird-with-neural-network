@@ -45,13 +45,14 @@ class AI:
 
     def mutation(self):
         r = rd.random()
-        if r<MUTATION_RATE: 
+        if r < MUTATION_RATE: 
             for i in range(2):
                 for j in range(2):
                     for k in range(2):
                         mutation_in_ijk = rd.random()
                         if mutation_in_ijk<MUTATION_IMPACT:
-                            mutation_factor = 1.5*rd.uniform(-1,1)
-                            self.weigth +=mutation_factor
-
-
+                            # mutation_factor = 1.5*rd.uniform(-1,1)
+                            w = self.weigth.shape[0]
+                            h = self.weigth.shape[1]
+                            mutation_factor = 1.5 * (2*np.random.rand(w, h)-1)
+                            self.weigth += mutation_factor
